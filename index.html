@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas med tall - playterje.com</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            background-color: lightblue;
+            height: 100%;
+        }
+
+        canvas {
+            background-color: white;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-crisp-edges;
+            image-rendering: pixelated;
+            height: 100vh;
+        }
+    </style>
+    <script src="controller.js"></script>
+</head>
+
+<body>
+
+    <canvas></canvas>
+
+    <script>
+        var x = 80;
+        var y = 50;
+        var speedX = 1;
+        var speedY = 0;
+
+        // view
+
+        function updateView(){
+            clearCanvas();
+            drawBrick(x,y);
+        }
+
+        const canvasSize = 100;
+        const canvas = document.getElementsByTagName("canvas")[0];
+        canvas.width = canvasSize;
+        canvas.height = canvasSize;
+        const ctx = canvas.getContext("2d");
+        let imageData = ctx.getImageData(0, 0, canvasSize, canvasSize);
+
+        function updateImage(index, newValue) {
+            imageData.data[index] = newValue;
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        function drawPixel(x, y, r, g, b, a) {
+            const pixelIndex = y * canvasSize + x;
+            const index = pixelIndex * 4;
+            imageData.data[index] = r === undefined ? 0 : r;
+            imageData.data[index + 1] = g === undefined ? 0 : g;
+            imageData.data[index + 2] = b === undefined ? 0 : b;
+            imageData.data[index + 3] = a === undefined ? 255 : a;
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        function range(fromInclusive, toExclusive) {
+            const rangeLength = toExclusive - fromInclusive;
+            return Array.from(new Array(rangeLength).keys())
+                .map(n => n + fromInclusive);
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvasSize, canvasSize);
+            imageData = ctx.getImageData(0, 0, canvasSize, canvasSize);
+        }
+
+        function drawLine(x, y, r, g, b) {
+            drawPixel(x, y, r, g, b, 255);
+            drawPixel(x + 1, y, r, g, b, 255);
+            drawPixel(x + 2, y, r, g, b, 255);
+            drawPixel(x + 3, y, r, g, b, 255);
+            drawPixel(x + 4, y, r, g, b, 255);
+            drawPixel(x + 5, y, r, g, b, 255);
+            drawPixel(x + 6, y, r, g, b, 255);
+        }
+
+        function drawBox(x, y, r, g, b) {
+            drawLine(x, y, r, g, b);
+            drawLine(x, y + 1, r, g, b);
+            drawLine(x, y + 2, r, g, b);
+        }
+
+        function drawBrick(x, y) {
+            drawBox(x, y, 0, 0, 0);
+            drawBox(x + 2, y, 0, 0, 0);
+            drawBox(x, y + 2, 0, 0, 0);
+            drawBox(x + 2, y + 2, 0, 0, 0);
+            drawBox(x + 1, y + 1, 255, 0, 0);
+        }
+    </script>
+</body>
+
+</html>

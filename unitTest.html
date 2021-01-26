@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Test Suite</title>
+    <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.14.0.css">
+</head>
+
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script src="https://code.jquery.com/qunit/qunit-2.14.0.js"></script>
+    <script src="controller.js"></script>
+
+    <script>
+        // model 
+        var x;
+        var y;
+        var speedX;
+        var speedY;
+
+        function updateView(){}
+
+        QUnit.test('retning mot høyre', function (assert) {
+            // arrange
+            x = 50;
+            y = 50;
+            speedX = 1;
+            speedY = 0;
+
+            // act
+            step();
+
+            // assert
+            assert.equal(x, 51);
+        });
+
+        QUnit.test('retning opp og mot venstre', function (assert) {
+            // arrange
+            x = 50;
+            y = 50;
+            speedX = -1;
+            speedY = -1;
+
+            // act
+            step();
+
+            // assert
+            assert.equal(x, 49);
+            assert.equal(y, 49);
+        });
+
+        QUnit.test('sprett i høyre vegg', function (assert) {
+            // arrange
+            x = 91;
+            y = 50;
+            speedX = 1;
+            speedY = 0;
+
+            // act
+            step();
+
+            // assert
+            assert.equal(x, 91);
+            assert.equal(speedX, -1);
+        });
+
+        
+        QUnit.test('2+5', function (assert) {
+            // arrange
+
+            // act
+            var answer = add(2,5);
+
+            // assert
+            assert.equal(answer, 7);
+        });
+    </script>
+</body>
+
+</html>
